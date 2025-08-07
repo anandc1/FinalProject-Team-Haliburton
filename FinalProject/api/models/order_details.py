@@ -8,8 +8,10 @@ class OrderDetail(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     order_id = Column(Integer, ForeignKey("orders.id"))
-    sandwich_id = Column(Integer, ForeignKey("sandwiches.id"))
-    amount = Column(Integer, index=True, nullable=False)
+    dish_id = Column(Integer, ForeignKey("dishes.id"))
+    qty = Column(Integer, index=True, nullable=False)
+    unit_price_cents = Column(Integer, nullable=False)
+    line_total_cents = Column(Integer, nullable=False)
 
-    sandwich = relationship("Sandwich", back_populates="order_details")
+    dish = relationship("Dish")
     order = relationship("Order", back_populates="order_details")
