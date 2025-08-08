@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Restaurant Ordering System API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+            border-radius: 5px;
+        }
+        .navigation {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .nav-button {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .nav-button:hover {
+            background-color: #2980b9;
+        }
+        .download-button {
+            background-color: #27ae60;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .download-button:hover {
+            background-color: #229954;
+        }
+        .document {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+            background-color: #fafafa;
+        }
+        .document.active {
+            display: block;
+        }
+        .document h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .document h2 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        .document h3 {
+            color: #7f8c8d;
+        }
+        .code-block {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        .separator {
+            border: none;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #e74c3c, #f39c12);
+            margin: 30px 0;
+        }
+        @media print {
+            body { background-color: white; }
+            .container { box-shadow: none; }
+            .navigation, .header { display: none; }
+            .document { display: block !important; page-break-before: always; }
+            .document:first-of-type { page-break-before: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Online Restaurant Ordering System API</h1>
+            <p>Documentation Suite</p>
+            <p><strong>Team Name:</strong> Andrew Haliburton | <strong>Date:</strong> August 7, 2025</p>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" onclick="showDocument('user-manual')">User Manual</button>
+            <button class="nav-button" onclick="showDocument('technical-doc')">Technical Document</button>
+            <button class="download-button" onclick="downloadUserManual()">📄 Download User Manual as PDF</button>
+            <button class="download-button" onclick="downloadTechnicalDoc()">📄 Download Technical Document as PDF</button>
+        </div>
+
+        <!-- User Manual Document -->
+        <div id="user-manual" class="document">
+            <h1>Online Restaurant Ordering System API - User Manual</h1>
+            
+            <p><strong>API Name:</strong> Online Restaurant Ordering System<br>
+            <strong>Team Name:</strong> Andrew Haliburton<br>
+            <strong>Date:</strong> August 7, 2025</p>
+
+            <hr class="separator">
+
+            <h2>Overview</h2>
+            <p>The Online Restaurant Ordering System API is designed to help end-users interact with a comprehensive restaurant management system. This API provides functionality for managing restaurant operations including menu management, order processing, customer reviews, promotions, and business analytics.</p>
+
+            <h3>Purpose and Primary Features:</h3>
+            <ul>
+                <li>Place and track customer orders with real-time status updates</li>
+                <li>Browse menu items organized by categories</li>
+                <li>Manage restaurant inventory and resources</li>
+                <li>Handle customer reviews and feedback</li>
+                <li>Apply promotional codes and discounts</li>
+                <li>Access business analytics and reporting</li>
+            </ul>
+
+            <hr class="separator">
+
+            <h2>Setup Instructions</h2>
+
+            <h3>Step 1: Install Dependencies</h3>
+            <p>Navigate to the project directory and install the required packages:</p>
+            <div class="code-block">
+pip install fastapi<br>
+pip install "uvicorn[standard]"<br>
+pip install sqlalchemy<br>
+pip install pymysql<br>
+pip install pytest<br>
+pip install pytest-mock<br>
+pip install httpx<br>
+pip install cryptography
+            </div>
+
+            <h3>Step 2: Database Setup</h3>
+            <p><strong>1. Create a MySQL Database:</strong></p>
+            <div class="code-block">CREATE DATABASE sandwich_maker_api;</div>
+
+            <p><strong>2. Configure Database Connection:</strong><br>
+            The API uses these default settings:</p>
+            <ul>
+                <li>Host: localhost</li>
+                <li>Port: 3306</li>
+                <li>Username: root</li>
+                <li>Password: rootroot</li>
+                <li>Database: sandwich_maker_api</li>
+            </ul>
+
+            <h3>Step 3: Start the Server</h3>
+            <div class="code-block">uvicorn api.main:app --reload</div>
+
+            <h3>Step 4: Verify Installation</h3>
+            <p>Navigate to <strong>http://127.0.0.1:8000/docs</strong> to access the interactive API documentation.</p>
+
+            <hr class="separator">
+
+            <h2>Usage Examples</h2>
+
+            <h3>Example 1: Placing a Guest Order</h3>
+            <p><strong>Request:</strong></p>
+            <div class="code-block">
+POST http://localhost:8000/orders/guest<br>
+Content-Type: application/json<br><br>
+{<br>
+&nbsp;&nbsp;"customer_name": "John Doe",<br>
+&nbsp;&nbsp;"customer_phone": "555-0123",<br>
+&nbsp;&nbsp;"customer_address": "123 Main St, City, State",<br>
+&nbsp;&nbsp;"is_delivery": true,<br>
+&nbsp;&nbsp;"payment_method": "card",<br>
+&nbsp;&nbsp;"items": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"dish_id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"qty": 2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"dish_id": 3,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"qty": 1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;]<br>
+}
+            </div>
+
+            <p><strong>Expected Response:</strong></p>
+            <div class="code-block">
+{<br>
+&nbsp;&nbsp;"order_number": "ORD-20241201-001",<br>
+&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;"status": "pending",<br>
+&nbsp;&nbsp;"total_cents": 2500,<br>
+&nbsp;&nbsp;"payment_method": "card",<br>
+&nbsp;&nbsp;"payment_status": "pending",<br>
+&nbsp;&nbsp;"items": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"dish_id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"qty": 2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"price_cents": 1200<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"dish_id": 3,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"qty": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"price_cents": 1300<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;"created_at": "2024-12-01T14:30:00",<br>
+&nbsp;&nbsp;"is_delivery": true<br>
+}
+            </div>
+
+            <h3>Example 2: Checking Order Status</h3>
+            <p><strong>Request:</strong></p>
+            <div class="code-block">GET http://localhost:8000/orders/number/ORD-20241201-001</div>
+
+            <p><strong>Expected Response:</strong></p>
+            <div class="code-block">
+{<br>
+&nbsp;&nbsp;"order_number": "ORD-20241201-001",<br>
+&nbsp;&nbsp;"status": "preparing",<br>
+&nbsp;&nbsp;"total_cents": 2500,<br>
+&nbsp;&nbsp;"payment_status": "paid",<br>
+&nbsp;&nbsp;"is_delivery": true,<br>
+&nbsp;&nbsp;"customer_name": "John Doe"<br>
+}
+            </div>
+
+            <h3>Example 3: Browsing the Menu</h3>
+            <p><strong>Request:</strong></p>
+            <div class="code-block">GET http://localhost:8000/menu/dishes?limit=10</div>
+
+            <p><strong>Expected Response:</strong></p>
+            <div class="code-block">
+[<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"name": "Classic Burger",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"description": "Beef patty with lettuce, tomato, and cheese",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"price_cents": 1200,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"category_id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"available": true<br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"id": 2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"name": "Caesar Salad",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"description": "Fresh romaine lettuce with caesar dressing",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"price_cents": 900,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"category_id": 2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"available": true<br>
+&nbsp;&nbsp;}<br>
+]
+            </div>
+
+            <h3>Example 4: Applying a Promotion Code</h3>
+            <p><strong>Request:</strong></p>
+            <div class="code-block">
+POST http://localhost:8000/promotions/apply<br>
+Content-Type: application/json<br><br>
+{<br>
+&nbsp;&nbsp;"promotion_code": "SAVE10",<br>
+&nbsp;&nbsp;"order_total_cents": 2500<br>
+}
+            </div>
+
+            <p><strong>Expected Response:</strong></p>
+            <div class="code-block">
+{<br>
+&nbsp;&nbsp;"original_amount_cents": 2500,<br>
+&nbsp;&nbsp;"discount_amount_cents": 250,<br>
+&nbsp;&nbsp;"final_amount_cents": 2250,<br>
+&nbsp;&nbsp;"promotion_applied": true,<br>
+&nbsp;&nbsp;"promotion_name": "10% Off Everything"<br>
+}
+            </div>
+
+            <h3>Example 5: Leaving a Review</h3>
+            <p><strong>Request:</strong></p>
+            <div class="code-block">
+POST http://localhost:8000/reviews/<br>
+Content-Type: application/json<br><br>
+{<br>
+&nbsp;&nbsp;"customer_name": "John Doe",<br>
+&nbsp;&nbsp;"rating": 5,<br>
+&nbsp;&nbsp;"comment": "Excellent food and fast delivery!",<br>
+&nbsp;&nbsp;"order_id": 1<br>
+}
+            </div>
+
+            <p><strong>Expected Response:</strong></p>
+            <div class="code-block">
+{<br>
+&nbsp;&nbsp;"id": 1,<br>
+&nbsp;&nbsp;"customer_name": "John Doe",<br>
+&nbsp;&nbsp;"rating": 5,<br>
+&nbsp;&nbsp;"comment": "Excellent food and fast delivery!",<br>
+&nbsp;&nbsp;"order_id": 1,<br>
+&nbsp;&nbsp;"approved": false,<br>
+&nbsp;&nbsp;"created_at": "2024-12-01T15:30:00"<br>
+}
+            </div>
+        </div>
+
+        <!-- Technical Document -->
+        <div id="technical-doc" class="document">
+            <h1>Online Restaurant Ordering System API - Technical Document</h1>
+            
+            <p><strong>API Name:</strong> Online Restaurant Ordering System<br>
+            <strong>Team Name:</strong> Andrew Haliburton<br>
+            <strong>Date:</strong> August 7, 2025</p>
+
+            <hr class="separator">
+
+            <h2>Architecture Overview</h2>
+            <p>The Online Restaurant Ordering System follows a layered architecture pattern using FastAPI framework. This implementation was developed as part of Assignment Part 2, which involved creating CRUD operations for a Sandwich Maker Machine Program extended into a comprehensive restaurant ordering system.</p>
+
+            <h3>System Architecture:</h3>
+            <div class="code-block">
+┌─────────────────────┐<br>
+│   API Layer         │  ← FastAPI Routers (HTTP Endpoints)<br>
+├─────────────────────┤<br>
+│   Controller Layer  │  ← Business Logic & Data Processing<br>
+├─────────────────────┤<br>
+│   Schema Layer      │  ← Pydantic Models (Validation & Serialization)<br>
+├─────────────────────┤<br>
+│   Model Layer       │  ← SQLAlchemy ORM Models<br>
+├─────────────────────┤<br>
+│   Database Layer    │  ← MySQL Database<br>
+└─────────────────────┘
+            </div>
+
+            <h3>Technology Stack:</h3>
+            <ul>
+                <li>Framework: FastAPI</li>
+                <li>Database: MySQL with SQLAlchemy ORM</li>
+                <li>Validation: Pydantic</li>
+                <li>Server: Uvicorn ASGI server</li>
+                <li>Testing: pytest</li>
+                <li>Database Driver: PyMySQL</li>
+            </ul>
+
+            <h3>Project Structure:</h3>
+            <div class="code-block">
+api/<br>
+├── controllers/          # Business logic layer<br>
+├── dependencies/         # Configuration and database setup<br>
+├── models/              # SQLAlchemy ORM models<br>
+├── routers/             # FastAPI route definitions<br>
+├── schemas/             # Pydantic schemas for validation<br>
+└── main.py              # Application entry point
+            </div>
+
+            <hr class="separator">
+
+            <h2>Endpoint Documentation</h2>
+
+            <h3>Orders Module</h3>
+
+            <h4>POST /orders/guest</h4>
+            <ul>
+                <li><strong>Purpose:</strong> Allow customers to place orders without account creation</li>
+                <li><strong>Parameters:</strong> customer_name, customer_phone, customer_address, is_delivery, payment_method, items</li>
+                <li><strong>Sample Request:</strong></li>
+            </ul>
+            <div class="code-block">
+{<br>
+&nbsp;&nbsp;"customer_name": "John Doe",<br>
+&nbsp;&nbsp;"customer_phone": "555-0123",<br>
+&nbsp;&nbsp;"customer_address": "123 Main St",<br>
+&nbsp;&nbsp;"is_delivery": true,<br>
+&nbsp;&nbsp;"payment_method": "card",<br>
+&nbsp;&nbsp;"items": [{"dish_id": 1, "qty": 2}]<br>
+}
+            </div>
+            <p><strong>Expected Response:</strong> Order confirmation with tracking number and details</p>
+
+            <h4>GET /orders/number/{order_number}</h4>
+            <ul>
+                <li><strong>Purpose:</strong> Retrieve order details using tracking number</li>
+                <li><strong>Parameters:</strong> order_number (path parameter)</li>
+                <li><strong>Sample Request:</strong> GET /orders/number/ORD-20241201-001</li>
+                <li><strong>Expected Response:</strong> Complete order information including items and status</li>
+            </ul>
+
+            <h4>PATCH /orders/{order_number}/status</h4>
+            <ul>
+                <li><strong>Purpose:</strong> Update order status</li>
+                <li><strong>Parameters:</strong> order_number (path), status (body)</li>
+                <li><strong>Sample Request:</strong> {"status": "preparing"}</li>
+                <li><strong>Expected Response:</strong> Updated order information</li>
+            </ul>
+
+            <h3>Menu Module</h3>
+
+            <h4>GET /menu/dishes</h4>
+            <ul>
+                <li><strong>Purpose:</strong> Retrieve available menu items</li>
+                <li><strong>Parameters:</strong> skip (optional), limit (optional), category_id (optional)</li>
+                <li><strong>Sample Request:</strong> GET /menu/dishes?limit=10&category_id=1</li>
+                <li><strong>Expected Response:</strong> List of dishes with details</li>
+            </ul>
+
+            <h4>POST /menu/dishes</h4>
+            <ul>
+                <li><strong>Purpose:</strong> Add new menu item</li>
+                <li><strong>Parameters:</strong> name, description, price_cents, category_id, available</li>
+                <li><strong>Sample Request:</strong></li>
+            </ul>
+            <div class="code-block">
+{<br>
+&nbsp;&nbsp;"name": "Classic Burger",<br>
+&nbsp;&nbsp;"description": "Beef patty with lettuce, tomato, and cheese",<br>
+&nbsp;&nbsp;"price_cents": 1200,<br>
+&nbsp;&nbsp;"category_id": 1,<br>
+&nbsp;&nbsp;"available": true<br>
+}
+            </div>
+            <p><strong>Expected Response:</strong> Created dish information</p>
+
+            <h3>Promotions Module</h3>
+
+            <h4>POST /promotions/apply</h4>
+            <ul>
+                <li><strong>Purpose:</strong> Apply promotion code to calculate discount</li>
+                <li><strong>Parameters:</strong> promotion_code, order_total_cents</li>
+                <li><strong>Sample Request:</strong></li>
+            </ul>
+            <div class="code-block">
+{<br>
+&nbsp;&nbsp;"promotion_code": "SAVE10",<br>
+&nbsp;&nbsp;"order_total_cents": 2500<br>
+}
+            </div>
+            <p><strong>Expected Response:</strong> Discount calculation with final amount</p>
+
+            <h3>Reviews Module</h3>
+
+            <h4>POST /reviews/</h4>
+            <ul>
+                <li><strong>Purpose:</strong> Submit customer feedback</li>
+                <li><strong>Parameters:</strong> customer_name, rating, comment, order_id</li>
+                <li><strong>Sample Request:</strong></li>
+            </ul>
+            <div class="code-block">
+{<br>
+&nbsp;&nbsp;"customer_name": "John Doe",<br>
+&nbsp;&nbsp;"rating": 5,<br>
+&nbsp;&nbsp;"comment": "Excellent food!",<br>
+&nbsp;&nbsp;"order_id": 1<br>
+}
+            </div>
+            <p><strong>Expected Response:</strong> Created review information</p>
+
+            <hr class="separator">
+
+            <h2>Code Examples</h2>
+
+            <h3>Database Model Definition:</h3>
+            <div class="code-block">
+# api/models/orders.py<br>
+from sqlalchemy import Column, Integer, String, Boolean, Enum<br>
+from sqlalchemy.orm import relationship<br>
+import enum<br>
+from ..dependencies.database import Base<br><br>
+
+class OrderStatus(enum.Enum):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;PENDING = "pending"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;CONFIRMED = "confirmed"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;PREPARING = "preparing"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;READY = "ready"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OUT_FOR_DELIVERY = "out_for_delivery"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DELIVERED = "delivered"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;CANCELLED = "cancelled"<br><br>
+
+class Order(Base):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;__tablename__ = "orders"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;id = Column(Integer, primary_key=True, index=True, autoincrement=True)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;order_number = Column(String(50), unique=True, nullable=False)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;customer_name = Column(String(100), nullable=False)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;customer_phone = Column(String(20), nullable=False)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;status = Column(Enum(OrderStatus), default=OrderStatus.PENDING, nullable=False)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;total_cents = Column(Integer, nullable=False, default=0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Relationships<br>
+&nbsp;&nbsp;&nbsp;&nbsp;order_details = relationship("OrderDetail", back_populates="order")
+            </div>
+
+            <h3>Pydantic Schema Implementation:</h3>
+            <div class="code-block">
+# api/schemas/orders.py<br>
+from typing import Optional, List<br>
+from pydantic import BaseModel<br><br>
+
+class OrderItemCreate(BaseModel):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dish_id: int<br>
+&nbsp;&nbsp;&nbsp;&nbsp;qty: int<br><br>
+
+class GuestOrderCreate(BaseModel):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;customer_name: str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;customer_phone: str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;customer_address: Optional[str] = None<br>
+&nbsp;&nbsp;&nbsp;&nbsp;is_delivery: bool = False<br>
+&nbsp;&nbsp;&nbsp;&nbsp;payment_method: Optional[str] = None<br>
+&nbsp;&nbsp;&nbsp;&nbsp;items: List[OrderItemCreate]
+            </div>
+
+            <h3>FastAPI Router Implementation:</h3>
+            <div class="code-block">
+# api/routers/orders.py<br>
+from fastapi import APIRouter, Depends, HTTPException<br>
+from sqlalchemy.orm import Session<br>
+from ..controllers import orders as controller<br>
+from ..schemas import orders as schema<br>
+from ..dependencies.database import get_db<br><br>
+
+router = APIRouter(tags=['Orders'], prefix="/orders")<br><br>
+
+@router.post("/guest", response_model=schema.OrderOut)<br>
+def create_guest_order(request: schema.GuestOrderCreate, db: Session = Depends(get_db)):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return controller.create_guest_order(db=db, payload=request)<br><br>
+
+@router.get("/number/{order_number}", response_model=schema.OrderOut)<br>
+def get_order_by_number(order_number: str, db: Session = Depends(get_db)):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;order = controller.get_order_by_number(db=db, order_number=order_number)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if not order:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise HTTPException(status_code=404, detail="Order not found")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return order
+            </div>
+
+            <hr class="separator">
+
+            <h2>Development Environment</h2>
+
+            <h3>Required Tools:</h3>
+            <ul>
+                <li>Python 3.7+</li>
+                <li>MySQL 8.0+</li>
+                <li>Git</li>
+            </ul>
+
+            <h3>Required Frameworks:</h3>
+            <ul>
+                <li>FastAPI (web framework)</li>
+                <li>SQLAlchemy (ORM)</li>
+                <li>Pydantic (data validation)</li>
+                <li>Uvicorn (ASGI server)</li>
+                <li>pytest (testing framework)</li>
+            </ul>
+
+            <h3>Setup Instructions:</h3>
+            <ol>
+                <li>Clone repository and navigate to project directory</li>
+                <li>Create virtual environment: <code>python -m venv venv</code></li>
+                <li>Activate virtual environment: <code>source venv/bin/activate</code> (Linux/Mac) or <code>venv\Scripts\activate</code> (Windows)</li>
+                <li>Install dependencies from requirements.txt</li>
+                <li>Configure database connection in api/dependencies/config.py</li>
+                <li>Create MySQL database: <code>CREATE DATABASE sandwich_maker_api;</code></li>
+                <li>Run application: <code>uvicorn api.main:app --reload</code></li>
+                <li>Access documentation at: <strong>http://localhost:8000/docs</strong></li>
+            </ol>
+
+            <h3>Development Tools:</h3>
+            <ul>
+                <li>Interactive API Documentation: http://localhost:8000/docs</li>
+                <li>Alternative Documentation: http://localhost:8000/redoc</li>
+                <li>Testing: pytest api/tests/</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function showDocument(docId) {
+            // Hide all documents
+            const docs = document.querySelectorAll('.document');
+            docs.forEach(doc => doc.classList.remove('active'));
+            
+            // Show selected document
+            document.getElementById(docId).classList.add('active');
+        }
+
+        function downloadUserManual() {
+            // Hide navigation and show only user manual
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.header').style.display = 'none';
+            
+            // Show only user manual
+            showDocument('user-manual');
+            
+            // Trigger print dialog
+            window.print();
+            
+            // Restore navigation after print
+            setTimeout(() => {
+                document.querySelector('.navigation').style.display = 'block';
+                document.querySelector('.header').style.display = 'block';
+            }, 1000);
+        }
+
+        function downloadTechnicalDoc() {
+            // Hide navigation and show only technical document
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.header').style.display = 'none';
+            
+            // Show only technical document
+            showDocument('technical-doc');
+            
+            // Trigger print dialog
+            window.print();
+            
+            // Restore navigation after print
+            setTimeout(() => {
+                document.querySelector('.navigation').style.display = 'block';
+                document.querySelector('.header').style.display = 'block';
+            }, 1000);
+        }
+
+        // Show user manual by default
+        showDocument('user-manual');
+    </script>
+</body>
+</html>

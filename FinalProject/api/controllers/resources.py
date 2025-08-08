@@ -17,7 +17,7 @@ def create_resource(db: Session, resource: ResourceCreate) -> ResourceOut:
         db.add(db_resource)
         db.commit()
         db.refresh(db_resource)
-        return ResourceOut.from_orm(db_resource)
+        return ResourceOut.model_validate(db_resource.__dict__)
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=400, detail="Resource name already exists")
@@ -28,7 +28,7 @@ def get_resources(db: Session, skip: int = 0, limit: int = 100):
 
 
 def get_resource(db: Session, resource_id: int) -> Resource:
-    resource = db.query(Resource).filter(Resource.id == resource_id).first()
+    resource = db.query(Resource).filter(Resource.id == resource_id, Resource.is_active == True).first()
     if resource is None:
         raise HTTPException(status_code=404, detail="Resource not found")
     return resource
@@ -51,7 +51,7 @@ def update_resource(db: Session, resource_id: int, resource: ResourceUpdate) -> 
     try:
         db.commit()
         db.refresh(db_resource)
-        return ResourceOut.from_orm(db_resource)
+        return ResourceOut.model_validate(db_resource.__dict__)
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=400, detail="Resource name already exists")
@@ -74,7 +74,7 @@ def update_resource_amount(db: Session, resource_id: int, amount_change: int):
     
     db.commit()
     db.refresh(db_resource)
-    return ResourceOut.from_orm(db_resource)
+    return ResourceOut.model_validate(db_resource.__dict__)
 
 
 def get_low_stock_resources(db: Session, threshold: int = 10):

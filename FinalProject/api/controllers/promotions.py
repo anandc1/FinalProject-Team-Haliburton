@@ -21,7 +21,7 @@ def create_promotion(db: Session, promotion: PromotionCreate) -> PromotionOut:
         db.add(db_promotion)
         db.commit()
         db.refresh(db_promotion)
-        return PromotionOut.from_orm(db_promotion)
+        return PromotionOut.model_validate(db_promotion.__dict__)
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=400, detail="Promotion code already exists")
@@ -61,7 +61,7 @@ def update_promotion(db: Session, promotion_id: int, promotion: PromotionUpdate)
     
     db.commit()
     db.refresh(db_promotion)
-    return PromotionOut.from_orm(db_promotion)
+    return PromotionOut.model_validate(db_promotion.__dict__)
 
 
 def delete_promotion(db: Session, promotion_id: int):

@@ -162,7 +162,7 @@ def test_get_low_stock_resources():
     response = client.get("/resources/low-stock/?threshold=10")
     assert response.status_code == 200
     data = response.json()
-    assert len(data) == 2  # Low Stock (5) and Medium Stock (15)
+    assert len(data) == 1  # Only Low Stock (5) should be included
     
     # Verify all returned resources have amount <= threshold
     for resource in data:

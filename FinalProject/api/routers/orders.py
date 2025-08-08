@@ -21,6 +21,16 @@ def read_all(db: Session = Depends(get_db)):
     return controller.read_all(db)
 
 
+@router.post("/guest", response_model=schema.OrderOut)
+def create_guest_order(request: schema.GuestOrderCreate, db: Session = Depends(get_db)):
+    return controller.create_guest_order(db=db, payload=request)
+
+
+@router.get("/number/{order_number}", response_model=schema.OrderOut)
+def get_order_by_number(order_number: str, db: Session = Depends(get_db)):
+    return controller.get_order_by_number(db=db, order_number=order_number)
+
+
 @router.get("/{item_id}", response_model=schema.Order)
 def read_one(item_id: int, db: Session = Depends(get_db)):
     return controller.read_one(db, item_id=item_id)
@@ -34,16 +44,6 @@ def update(item_id: int, request: schema.OrderUpdate, db: Session = Depends(get_
 @router.delete("/{item_id}")
 def delete(item_id: int, db: Session = Depends(get_db)):
     return controller.delete(db=db, item_id=item_id)
-
-
-@router.post("/guest", response_model=schema.OrderOut)
-def create_guest_order(request: schema.GuestOrderCreate, db: Session = Depends(get_db)):
-    return controller.create_guest_order(db=db, payload=request)
-
-
-@router.get("/{order_number}", response_model=schema.OrderOut)
-def get_order_by_number(order_number: str, db: Session = Depends(get_db)):
-    return controller.get_order_by_number(db=db, order_number=order_number)
 
 
 @router.patch("/{order_number}/status")

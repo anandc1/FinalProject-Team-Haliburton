@@ -29,7 +29,7 @@ def create_review(db: Session, review: ReviewCreate) -> ReviewOut:
         db.add(db_review)
         db.commit()
         db.refresh(db_review)
-        return ReviewOut.from_orm(db_review)
+        return ReviewOut.model_validate(db_review.__dict__)
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=400, detail="Review creation failed")
@@ -57,7 +57,7 @@ def update_review(db: Session, review_id: int, review: ReviewUpdate) -> ReviewOu
     
     db.commit()
     db.refresh(db_review)
-    return ReviewOut.from_orm(db_review)
+    return ReviewOut.model_validate(db_review.__dict__)
 
 
 def delete_review(db: Session, review_id: int):

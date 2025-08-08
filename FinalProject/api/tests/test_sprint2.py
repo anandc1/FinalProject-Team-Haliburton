@@ -108,7 +108,7 @@ def test_order_status_tracking():
     assert response.status_code == 200
     
     # Verify final status
-    order_response = client.get(f"/orders/{order_number}")
+    order_response = client.get(f"/orders/number/{order_number}")
     assert order_response.json()["status"] == "ready"
 
 
@@ -144,7 +144,7 @@ def test_payment_status_updates():
     assert response.status_code == 200
     
     # Verify payment status
-    order_response = client.get(f"/orders/{order_number}")
+    order_response = client.get(f"/orders/number/{order_number}")
     assert order_response.json()["payment_status"] == "paid"
 
 

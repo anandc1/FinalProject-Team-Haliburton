@@ -52,7 +52,7 @@ def list_dishes(
 @router.get("/dishes/{dish_id}", response_model=DishOut)
 def get_dish_endpoint(dish_id: int, db: Session = Depends(get_db)):
     dish = get_dish(db, dish_id)
-    return DishOut.from_orm(dish)
+    return DishOut.model_validate(dish.__dict__)
 
 
 @router.put("/dishes/{dish_id}", response_model=DishOut)

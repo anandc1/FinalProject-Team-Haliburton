@@ -3,14 +3,23 @@ from fastapi import HTTPException, status, Response, Depends
 from ..models import orders as model
 from ..models.dishes import Dish
 from ..schemas.orders import GuestOrderCreate, OrderOut, OrderStatusUpdate, PaymentUpdate
+from ..schemas.order_details import OrderDetail
 from sqlalchemy.exc import SQLAlchemyError
 import uuid
 
 
 def create(db: Session, request):
+    # Generate unique order number
+    order_number = uuid.uuid4().hex[:12]
+    
     new_item = model.Order(
+        order_number=order_number,
         customer_name=request.customer_name,
-        description=request.description
+        customer_phone="000-000-0000",  # Default phone for simple orders
+        description=request.description,
+        total_cents=0,  # Default total for simple orders
+        is_delivery=False,  # Default to pickup
+        payment_status="pending"  # Default payment status
     )
 
     try:
@@ -127,17 +136,27 @@ def create_guest_order(db: Session, payload: GuestOrderCreate) -> OrderOut:
         db.commit()
         
         # Return order with details
-        return OrderOut(
-            order_number=new_order.order_number,
-            id=new_order.id,
-            status=new_order.status.value,
-            total_cents=total_cents,
-            payment_method=new_order.payment_method,
-            payment_status=new_order.payment_status,
-            items=order_details,
-            created_at=new_order.order_date,
-            is_delivery=new_order.is_delivery
-        )
+        from ..schemas.order_details import OrderDetail as OrderDetailSchema
+        
+        order_data = {
+                "order_number": new_order.order_number,
+                "id": new_order.id,
+                "status": new_order.status.value,
+                "total_cents": total_cents,
+                "payment_method": new_order.payment_method,
+                "payment_status": new_order.payment_status,
+                "items": [OrderDetailSchema(
+                    id=detail.id,
+                    order_id=detail.order_id,
+                    dish_id=detail.dish_id,
+                    qty=detail.qty,
+                    unit_price_cents=detail.unit_price_cents,
+                    line_total_cents=detail.line_total_cents
+                ) for detail in order_details],
+                "created_at": new_order.order_date,
+                "is_delivery": new_order.is_delivery
+            }
+        return OrderOut.model_validate(order_data)
         
     except SQLAlchemyError as e:
         db.rollback()
@@ -154,6 +173,8 @@ def get_order_by_number(db: Session, order_number: str):
     from ..models.order_details import OrderDetail
     order_details = db.query(OrderDetail).filter(OrderDetail.order_id == order.id).all()
     
+    from ..schemas.order_details import OrderDetail as OrderDetailSchema
+    
     return OrderOut(
         order_number=order.order_number,
         id=order.id,
@@ -161,7 +182,14 @@ def get_order_by_number(db: Session, order_number: str):
         total_cents=order.total_cents,
         payment_method=order.payment_method,
         payment_status=order.payment_status,
-        items=order_details,
+        items=[OrderDetailSchema(
+            id=detail.id,
+            order_id=detail.order_id,
+            dish_id=detail.dish_id,
+            qty=detail.qty,
+            unit_price_cents=detail.unit_price_cents,
+            line_total_cents=detail.line_total_cents
+        ) for detail in order_details],
         created_at=order.order_date,
         is_delivery=order.is_delivery
     )
@@ -216,4 +244,34 @@ def get_orders_by_status(db: Session, status: str = None, skip: int = 0, limit: 
             raise HTTPException(status_code=400, detail="Invalid status")
         query = query.filter(model.Order.status == model.OrderStatus(status))
     
-    return query.offset(skip).limit(limit).all()
+    orders = query.offset(skip).limit(limit).all()
+    
+    # Convert to OrderOut format
+    from ..models.order_details import OrderDetail
+    from ..schemas.order_details import OrderDetail as OrderDetailSchema
+    
+    result = []
+    for order in orders:
+        order_details = db.query(OrderDetail).filter(OrderDetail.order_id == order.id).all()
+        
+        order_data = {
+            "order_number": order.order_number,
+            "id": order.id,
+            "status": order.status.value,
+            "total_cents": order.total_cents,
+            "payment_method": order.payment_method,
+            "payment_status": order.payment_status,
+            "items": [OrderDetailSchema(
+                id=detail.id,
+                order_id=detail.order_id,
+                dish_id=detail.dish_id,
+                qty=detail.qty,
+                unit_price_cents=detail.unit_price_cents,
+                line_total_cents=detail.line_total_cents
+            ) for detail in order_details],
+            "created_at": order.order_date,
+            "is_delivery": order.is_delivery
+        }
+        result.append(OrderOut.model_validate(order_data))
+    
+    return result

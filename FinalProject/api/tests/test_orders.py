@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from ..dependencies.database import Base, get_db
 
-# Test database
+# Test database - Use SQLite for testing
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -29,22 +29,22 @@ def setup_database():
     Base.metadata.drop_all(bind=engine)
 
 
-def test_create_order(db_session):
-    # Create a sample order
+def test_create_order():
+    # Create a sample order using the correct schema
     order_data = {
         "customer_name": "John Doe",
         "description": "Test order"
     }
 
-    order_object = model.Order(**order_data)
-
-    # Call the create function
-    created_order = controller.create(db_session, order_object)
-
+    # Test using the API endpoint
+    response = client.post("/orders/", json=order_data)
+    assert response.status_code == 200
+    data = response.json()
+    
     # Assertions
-    assert created_order is not None
-    assert created_order.customer_name == "John Doe"
-    assert created_order.description == "Test order"
+    assert data is not None
+    assert data["customer_name"] == "John Doe"
+    assert data["description"] == "Test order"
 
 
 def test_create_guest_order():
@@ -106,7 +106,7 @@ def test_create_guest_order():
     
     # Fetch by order_number and verify
     order_number = data["order_number"]
-    fetch_response = client.get(f"/orders/{order_number}")
+    fetch_response = client.get(f"/orders/number/{order_number}")
     assert fetch_response.status_code == 200
     fetch_data = fetch_response.json()
     assert fetch_data["order_number"] == order_number

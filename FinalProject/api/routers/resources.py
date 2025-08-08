@@ -24,7 +24,7 @@ def list_resources(skip: int = 0, limit: int = 100, db: Session = Depends(get_db
 @router.get("/{resource_id}", response_model=ResourceOut)
 def get_resource_endpoint(resource_id: int, db: Session = Depends(get_db)):
     resource = get_resource(db, resource_id)
-    return ResourceOut.from_orm(resource)
+    return ResourceOut.model_validate(resource.__dict__)
 
 
 @router.put("/{resource_id}", response_model=ResourceOut)

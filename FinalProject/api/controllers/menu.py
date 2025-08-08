@@ -16,7 +16,7 @@ def create_category(db: Session, category: CategoryCreate) -> CategoryOut:
         db.add(db_category)
         db.commit()
         db.refresh(db_category)
-        return CategoryOut.from_orm(db_category)
+        return CategoryOut.model_validate(db_category.__dict__)
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=400, detail="Category name already exists")
@@ -46,7 +46,7 @@ def update_category(db: Session, category_id: int, category: CategoryUpdate) -> 
     try:
         db.commit()
         db.refresh(db_category)
-        return CategoryOut.from_orm(db_category)
+        return CategoryOut.model_validate(db_category.__dict__)
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=400, detail="Category name already exists")
@@ -75,7 +75,7 @@ def create_dish(db: Session, dish: DishCreate) -> DishOut:
     db.add(db_dish)
     db.commit()
     db.refresh(db_dish)
-    return DishOut.from_orm(db_dish)
+    return DishOut.model_validate(db_dish.__dict__)
 
 
 def get_dishes(db: Session, skip: int = 0, limit: int = 100, category_id: int = None):
@@ -86,7 +86,7 @@ def get_dishes(db: Session, skip: int = 0, limit: int = 100, category_id: int = 
 
 
 def get_dish(db: Session, dish_id: int) -> Dish:
-    dish = db.query(Dish).filter(Dish.id == dish_id).first()
+    dish = db.query(Dish).filter(Dish.id == dish_id, Dish.is_active == True).first()
     if dish is None:
         raise HTTPException(status_code=404, detail="Dish not found")
     return dish
@@ -112,7 +112,7 @@ def update_dish(db: Session, dish_id: int, dish: DishUpdate) -> DishOut:
     
     db.commit()
     db.refresh(db_dish)
-    return DishOut.from_orm(db_dish)
+    return DishOut.model_validate(db_dish.__dict__)
 
 
 def delete_dish(db: Session, dish_id: int):

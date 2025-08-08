@@ -77,7 +77,7 @@ def get_revenue_by_category(db: Session):
         Category.id,
         Category.name,
         func.sum(OrderDetail.line_total_cents).label('total_revenue')
-    ).join(Dish).join(OrderDetail).filter(
+    ).select_from(Category).join(Dish, Category.id == Dish.category_id).join(OrderDetail, Dish.id == OrderDetail.dish_id).filter(
         Category.is_active == True,
         Dish.is_active == True
     ).group_by(Category.id, Category.name).order_by(
